@@ -27,7 +27,6 @@ KeepSultan 是一款为针对新版Keep应用界面的自动化工具，帮助�
 我们在release中提供 GUI 版本的 EXE 文件，适合无 Python 环境的用户，方便部署与分发。
 
 ## 3. 使用说明
-> “汝若依循此路，KeepSultan 将助汝如虎添翼。”
 
 ### 3.1 安装依赖
 若运行源码版本，请安装必要依赖：
@@ -48,7 +47,10 @@ python keepsultan_gui.py
 ```
 
 #### 可执行程序
-[下载release](https://github.com/Carzit/KeepSultan/releases/download/v0.0.1/KeepSultan.zip)
+[下载release](https://github.com/Carzit/KeepSultan/releases/download/v0.0.2/KeepSultan.zip)
+
+### 3.3 衍生版本
+感谢[eltsen00](https://github.com/eltsen00)开发的网页版[KeepGeneration-Web](https://github.com/eltsen00/KeepGeneration-Web)，~~我建议命名为KeepVizier~~. 访问[https://keep.hshoe.cn/](https://keep.hshoe.cn/)直接使用！
 
 ## 4. 胡言乱语
 

@@ -25,7 +25,6 @@ We have implemented an intuitive graphical user interface with `KeepSultanGUI.py
 An EXE file for the GUI version is provided, suitable for users without a Python environment, making deployment and distribution more convenient.
 
 ## 3. Usage Instructions
-> "If you follow this path, KeepSultan will be your winged tiger."
 
 ### 3.1 Install Dependencies
 If running the source code version, please install necessary dependencies:
@@ -42,11 +41,14 @@ python KeepSultan.py [-h] [--config_path CONFIG_PATH]  [--save_path SAVE_PATH]
 
 #### Graphical Interface Version:
 ```bash
-python keepsultan_gui.py
+python KeepSultanGUI.py
 ```
 
 #### Executable Program
-[Download Release](https://github.com/Carzit/KeepSultan/releases/download/v0.0.1/KeepSultan.zip).
+[Download Release](https://github.com/Carzit/KeepSultan/releases/download/v0.0.2/KeepSultan.zip).
+
+### 3.3 Derivative Versions
+Thanks to [eltsen00](https://github.com/eltsen00) for developing the web version [KeepGeneration-Web](https://github.com/eltsen00/KeepGeneration-Web),~~I suggest naming it KeepVizier~~. Visit [https://keep.hshoe.cn/](https://keep.hshoe.cn/) to use it directly!
 
 ## 4. Loose Talk
 In the name of the Most Gracious and Merciful Technology:

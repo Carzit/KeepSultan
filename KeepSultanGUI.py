@@ -35,6 +35,8 @@ class ConfigManager:
         if os.path.exists("config.json"):
             with open("config.json", "r") as f:
                 load_configs = json.load(f)
+            self.configs["template"] = load_configs.get("template", "scr/template.png")
+            self.configs["map"] = load_configs.get("map", "scr/map.png")
             self.configs["avatar"] = load_configs["avatar"]
             self.configs["username"] = load_configs["username"]
             self.configs["total_km"] = load_configs["total_km"]

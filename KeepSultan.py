@@ -281,9 +281,9 @@ class KeepSultan:
 
         end_time = self.configs["end_time"]
         total_time = random_time_in_range(str(self.configs["total_time"][0]), str(self.configs["total_time"][1]))
-        sport_time = random_time_in_range(str(self.configs["sport_time"][0]), str(self.configs["sport_time"][1]))
+        sport_time = min(random_time_in_range(str(self.configs["sport_time"][0]), str(self.configs["sport_time"][1])), total_time)
         start_time = calculate_start_time(end_time, total_time)
-        total_km = random_number_in_range(float(self.configs["total_km"][0]), float(self.configs["total_km"][1]), precision=2)
+        total_km = random_number_in_range(float(self.configs["total_km"][0]), float(self.configs["total_km"][1]), precision=2) + 0.01  # 保留两位小数，增加0.01以避免精度问题
 
         pace = calculate_pace(total_km, sport_time)
         cost = calculate_cost(total_time)
@@ -310,7 +310,11 @@ class KeepSultan:
 
         self.image_editor.add_text(str(total_time), (55, 1910), "fonts/QanelasSemiBold.otf", 65, (0, 0, 0)) #总时长
         self.image_editor.add_text(str(cumulative_climb), (445, 1910), "fonts/QanelasSemiBold.otf", 65, (0, 0, 0)) #累计爬升
-        self.image_editor.add_text(str(average_cadence), (800, 1910), "fonts/QanelasSemiBold.otf", 65, (0, 0, 0)) #平均步频
+        # 根据 KeepGeneration-Web Commit #4193165
+        if(average_cadence > 100):
+            self.image_editor.add_text(str(average_cadence), (805, 1910), "fonts/QanelasSemiBold.otf", 65, (0, 0, 0)) 
+        else:
+            self.image_editor.add_text(str(average_cadence), (835, 1910), "fonts/QanelasSemiBold.otf", 65, (0, 0, 0))
         self.image_editor.add_text(str(exercise_load), (55, 2070), "fonts/QanelasSemiBold.otf", 65, (0, 0, 0)) #运动负荷
 
 def parse_args():
