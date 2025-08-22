@@ -1,68 +1,208 @@
-# KeepSultan: Keep App Running Screenshot Generator
-English | [中文](https://github.com/Carzit/KeepSultan/blob/main/README.md)
+# KeepSultan 🏃‍♂️✨
 
-## 1. Project Overview
+**Keep-style Running Screenshot Generator**
 
-KeepSultan is an automation tool tailored for the latest version of the Keep app interface, designed to help users automatically generate running screenshots. It supports customizable parameters and random generation.
+[中文](https://github.com/Carzit/KeepSultan/blob/main/README.md) | English
 
-## 2. Core Features
+---
 
-### 2.1 Customizable Parameters & Random Generation
-Users can upload their avatar, map and specify a username, flexibly configure the following parameter ranges, and easily generate personalized screenshots:
-- Date (date)
-- End Time (end_time)
-- Total Distance Run (total_km)
-- Exercise Duration (sport_time)
-- Total Time (total_time)
-- Cumulative Elevation Gain (cumulative_climb)
-- Average Cadence (average_cadence)
-- Exercise Load (exercise_load)
+## 1. Introduction
 
-### 2.2 GUI Version
-We have implemented an intuitive graphical user interface with `KeepSultanGUI.py`, allowing users to generate screenshots with just a few clicks.
+**KeepSultan** is a lightweight automation tool designed to generate **Keep app-style running screenshots**.
+It automatically fills in metrics, supports random generation, and even allows you to use avatars/maps directly from URLs to recreate authentic Keep-style images.
 
-### 2.3 Executable File
-An EXE file for the GUI version is provided, suitable for users without a Python environment, making deployment and distribution more convenient.
+* 🎨 **Customization**: Upload your avatar & map, freely set username and metric ranges
+* 🎲 **Randomization**: Auto-generate values within ranges for natural variation
+* 🖥 **Dual Mode**: Supports both **CLI** and **GUI** usage
+* 🌍 **Flexible Resources**: Avatars and maps can be local files or HTTP(S) URLs (cached automatically)
+* ⚙️ **Preference Persistence**: Config changes are automatically saved to JSON, restored on next startup
 
-## 3. Usage Instructions
+---
+
+## 2. Features
+
+### 2.1 Metric Customization & Randomization
+
+Supports configuration or random generation for:
+
+* Date (`date`)
+* End Time (`end_time`)
+* Total Distance (`total_km`)
+* Sport Duration (`sport_time`)
+* Total Duration (`total_time`)
+* Cumulative Climb (`cumulative_climb`)
+* Average Cadence (`average_cadence`)
+* Exercise Load (`exercise_load`)
+
+Avatar & Map sources:
+
+* Local file, e.g. `./avatar.png`
+* Online URL, e.g. `https://example.com/avatar.jpg` (auto cached)
+
+👉 **Recommended aspect ratios**:
+
+* Avatar: 1:1
+* Map: 35:28
+
+### 2.2 GUI Mode
+
+Provided in `KeepSultanGUI.py`:
+
+* **Preview**: open a popup window to preview generated image
+* **Save**: save final output image
+* Config changes are automatically saved to JSON and reloaded on next startup
+
+### 2.3 CLI Mode
+
+Quickly generate screenshots with parameters:
+
+```bash
+python KeepSultan.py --config config.json --save result.png \
+    --username Alice --avatar https://example.com/a.png --map scr/map.png
+```
+
+### 2.4 Executable Version
+
+No Python required, just run the `.exe`:
+👉 [Download latest release](https://github.com/Carzit/KeepSultan/releases/download/v0.0.3/KeepSultan.zip)
+
+---
+
+## 3. Usage
 
 ### 3.1 Install Dependencies
-If running the source code version, please install necessary dependencies:
+
+For source usage:
+
 ```bash
 pip install pillow
 ```
-### 3.2 Running the Program
 
-#### Command Line Version:
+Or synchronize environment via [uv](https://uv.doczh.com/):
+
 ```bash
-python KeepSultan.py [-h] [--config_path CONFIG_PATH]  [--save_path SAVE_PATH] 
-                     [--template TEMPLATE] [--map MAP] [--avatar AVATAR] [--username USERNAME] [--date DATE] [--end_time END_TIME] [--total_km TOTAL_KM] [--sport_time SPORT_TIME] [--total_time TOTAL_TIME] [--cumulative_climb CUMULATIVE_CLIMB][--average_cadence AVERAGE_CADENCE] [--exercise_load EXERCISE_LOAD]
+uv sync
 ```
 
-#### Graphical Interface Version:
+### 3.2 Configuration File
+
+The configuration file is a standard JSON used to store defaults and preferences.
+Unset fields will fallback to built-in defaults.
+
+#### Fields
+
+* **Resource paths**
+
+  * `template`: Template image path or URL
+  * `map`: Running map path or URL
+  * `avatar`: Avatar path or URL
+  * `username`: Username
+
+* **Date & Time**
+
+  * `date`: (`YYYY/MM/DD`), `"today"` auto-fills current date
+  * `end_time`: (`HH:MM:SS`), `"now"` auto-fills current time
+
+* **Metric ranges** (single value or range)
+
+  * `total_km`: `{ "low": 3.02, "high": 3.30, "precision": 2 }`
+  * `sport_time`: `{ "start": "00:21:00", "end": "00:23:00" }`
+  * `total_time`: `{ "start": "00:34:00", "end": "00:39:00" }`
+  * `cumulative_climb`: `{ "low": 90, "high": 96, "precision": 0 }`
+  * `average_cadence`: `{ "low": 76, "high": 81, "precision": 0 }`
+  * `exercise_load`: `{ "low": 48, "high": 51, "precision": 0 }`
+
+* **Font styles** (optional)
+
+  * `font_regular`, `font_bold_big`, `font_semibold`, `font_clock`
+  * Format:
+
+    ```json
+    {
+      "font_path": "fonts/SourceHanSansCN-Regular.otf",
+      "font_size": 36,
+      "color": [0, 0, 0]
+    }
+    ```
+
+#### Example Config
+
+```json
+{
+  "template": "scr/template.png",
+  "map": "scr/map.png",
+  "avatar": "https://example.com/avatar.png",
+  "username": "Alice",
+  "date": "2025/08/21",
+  "end_time": "18:30:00",
+  "total_km": { "low": 3.04, "high": 3.3, "precision": 2 },
+  "sport_time": { "start": "00:20:00", "end": "00:23:00" },
+  "total_time": { "start": "00:34:00", "end": "00:39:00" },
+  "cumulative_climb": { "low": 90, "high": 96, "precision": 0 },
+  "average_cadence": { "low": 76, "high": 81, "precision": 0 },
+  "exercise_load": { "low": 48, "high": 51, "precision": 0 }
+}
+```
+
+### 3.3 Running
+
+#### CLI
+
+```bash
+python KeepSultan.py [-h] [--config CONFIG] [--save SAVE] \
+    [--template TEMPLATE] [--map MAP] [--avatar AVATAR] \
+    [--username USERNAME] [--date DATE] [--end-time END_TIME] [--seed SEED]
+```
+
+| Argument       | Type | Description                                 |
+| -------------- | ---- | ------------------------------------------- |
+| `-c, --config` | str  | Path to JSON config (default `config.json`) |
+| `-s, --save`   | str  | Output image path (default `save.png`)      |
+| `--template`   | str  | Template background path or URL             |
+| `--map`        | str  | Running map path or URL                     |
+| `--avatar`     | str  | Avatar path or URL                          |
+| `--username`   | str  | Username                                    |
+| `--date`       | str  | Date (`YYYY/MM/DD`, defaults to today)      |
+| `--end-time`   | str  | End time (`HH:MM[:SS]`, defaults to now)    |
+| `--seed`       | int  | Random seed for reproducible results        |
+
+👉 CLI parameters override config file values.
+
+#### GUI
+
 ```bash
 python KeepSultanGUI.py
 ```
 
-#### Executable Program
-[Download Release](https://github.com/Carzit/KeepSultan/releases/download/v0.0.2/KeepSultan.zip).
+---
 
-### 3.3 Derivative Versions
-Thanks to [eltsen00](https://github.com/eltsen00) for developing the web version [KeepGeneration-Web](https://github.com/eltsen00/KeepGeneration-Web),~~I suggest naming it KeepVizier~~. Visit [https://keep.hshoe.cn/](https://keep.hshoe.cn/) to use it directly!
+## 4. Credits & Related Projects
 
-## 4. Loose Talk
-In the name of the Most Gracious and Merciful Technology:
-> "Any platform that binds freedom should be conquered by technology; any rule that limits creativity should be rewritten."
+Special thanks to [eltsen00](https://github.com/eltsen00) for developing the web version [KeepGeneration-Web](https://github.com/eltsen00/KeepGeneration-Web).
+Try it online 👉 [https://keep.hshoe.cn/](https://keep.hshoe.cn/)
 
-May reason and freedom illuminate the realm of technology, just as the grace of God showers upon the earth; may this project become the ultimate liberator of the Long Running Month, leading users onto the bright path of efficiency and creativity.
+---
 
-What is "Sultan" in KeepSultan?
-> "To conquer disorder with technology, to liberate oppression with freedom."
+## 5. Fun Note 🌙
 
-The name KeepSultan symbolizes the supreme power of technology, like the iron cavalry of a Sultan sweeping across all fronts, breaking the shackles of rules during the Long Running Month, and returning freedom to users.
+In the name of Merciful Technology:
 
-> Like the glory of Solomon, KeepSultan is the embodiment of technology and efficiency.  
-> Like the conquests of Alexander, KeepSultan is the vanguard of creation and freedom.
+> “All platforms that constrain freedom shall be conquered by code;
+> all rules that restrict creativity shall be rewritten.”
 
-## 5. Disclaimer
-This tool is intended solely for personal learning and research purposes. Please do not use it for actions that violate laws or platform rules. Users are responsible for their own actions, and the developers bear no legal responsibility.
+KeepSultan — the Sultan of running screenshots:
+
+* **Conquering chaos with technology**
+* **Liberating freedom from restriction**
+
+> May your runs go beyond your legs,
+> and may your screenshots go beyond Keep.
+
+---
+
+## 6. Disclaimer
+
+This tool is for **personal learning and research** purposes only.  
+Do not use it for illegal activities or to violate platform policies.  
+Users assume full responsibility for consequences; the developer is not liable.  
+

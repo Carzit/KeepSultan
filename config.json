@@ -1,32 +1,73 @@
 {
-    "template": "scr/template.png",
-    "map": "scr/map3.png",
-    "avatar": "",
-    "username": "",
-    "date": "2024/11/20",
-    "end_time": "20:14",
-    "total_km": [
-        "3.02",
-        "3.3"
-    ],
-    "sport_time": [
-        "00:21:00",
-        "00:23:00"
-    ],
-    "total_time": [
-        "00:34:00",
-        "00:39:00"
-    ],
-    "cumulative_climb": [
-        "90",
-        "96"
-    ],
-    "average_cadence": [
-        "76",
-        "81"
-    ],
-    "exercise_load": [
-        "48",
-        "51"
+  "template": "scr/template.png",
+  "map": "scr/map3.png",
+  "avatar": "C:/Users/18505/Downloads/126076978.jpg",
+  "username": "UserName",
+  "date": "today",
+  "end_time": "now",
+  "total_km": {
+    "low": 3.04,
+    "high": 3.3,
+    "precision": 2
+  },
+  "sport_time": {
+    "start": "00:20:00",
+    "end": "00:23:00"
+  },
+  "total_time": {
+    "start": "00:34:00",
+    "end": "00:39:00"
+  },
+  "cumulative_climb": {
+    "low": 90.0,
+    "high": 96.0,
+    "precision": 0
+  },
+  "average_cadence": {
+    "low": 76.0,
+    "high": 81.0,
+    "precision": 0
+  },
+  "exercise_load": {
+    "low": 48.0,
+    "high": 51.0,
+    "precision": 0
+  },
+  "font_regular": {
+    "font_path": "fonts/SourceHanSansCN-Regular.otf",
+    "font_size": 36,
+    "color": [
+      0,
+      0,
+      0
     ]
+  },
+  "font_bold_big": {
+    "font_path": "fonts/QanelasBlack.otf",
+    "font_size": 180,
+    "color": [
+      0,
+      0,
+      0
+    ]
+  },
+  "font_semibold": {
+    "font_path": "fonts/QanelasSemiBold.otf",
+    "font_size": 65,
+    "color": [
+      0,
+      0,
+      0
+    ]
+  },
+  "font_clock": {
+    "font_path": "fonts/SourceHanSansCN-Regular.otf",
+    "font_size": 40,
+    "color": [
+      0,
+      0,
+      0
+    ]
+  },
+  "prefs_file": "keepsultan_prefs.json"
 }
