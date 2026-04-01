@@ -32,8 +32,7 @@ from urllib.request import urlopen, Request
 
 from PIL import Image, ImageDraw, ImageFont
 
-# 导入地图生成模块
-import map as map_generator
+# 地图生成模块将在需要时动态导入
 
 # ------------------------------
 # 类型与工具
@@ -202,8 +201,8 @@ class KeepConfig:
     date: str = "today"  # 默认留空，运行时自动填充今天
     end_time: TimeStr = "now"  # 默认留空，运行时自动填充当前时间
     location: str = "高密"  # 可选，默认为高密
-    weather: str = "多云"  # 可选，默认为多云
-    temperature: str = "20°C" # 可选，默认为20℃
+    weather: str = "auto"  # 可选，"auto"表示自动获取，其他值表示自定义
+    temperature: str = "auto" # 可选，"auto"表示自动获取，其他值表示自定义
 
     # 指标区间（与原始脚本保持一致）
     total_km: NumberRange = field(default_factory=lambda: NumberRange(3.02, 3.30, precision=2))
@@ -302,8 +301,8 @@ class KeepConfig:
                                             tuple(v.get("color", base.font_clock.color)))  # type: ignore
 
         # 在配置加载完成后，根据location获取天气数据
-        # 只有当weather或temperature为空时才获取，这样用户可以自定义天气信息
-        if not base.weather or not base.temperature:
+        # 只有当weather或temperature为"auto"时才获取，这样用户可以自定义天气信息
+        if base.weather == "auto" or base.temperature == "auto":
             base.weather, base.temperature = fetch_weather_data(base.location)
 
         return base
@@ -480,6 +479,7 @@ class KeepSultanApp:
         # 3) 地图（动态生成或使用静态地图）
         try:
             # 尝试使用map.py生成动态轨迹地图
+            import map as map_generator
             map_img = map_generator.generate_keep_style_path(
                 bg_path=self.cfg.map_bg_path,
                 path_mask_path=self.cfg.map_mask_path,

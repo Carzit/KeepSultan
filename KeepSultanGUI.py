@@ -20,7 +20,6 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 from typing import Dict
 import threading
-import time
 import webbrowser
 # 导入天气API函数
 from KeepSultan import fetch_weather_data
@@ -67,6 +66,9 @@ class KeepSultanGUI:
         
         # 添加滚动条
         canvas = tk.Canvas(self.root)
+        
+        # 用于存储debounce延迟调用的ID
+        self._weather_api_call_id = None
         scrollbar = tk.Scrollbar(self.root, orient="vertical", command=canvas.yview)
         scrollable_frame = tk.Frame(canvas)
         
@@ -280,14 +282,23 @@ class KeepSultanGUI:
     def _on_var_change(self, key: str, var: tk.StringVar) -> None:
         setattr(self.cfg, key, var.get())
         
-        # 如果修改的是地点，自动获取新地区的天气和温度（在后台线程中）
+        # 如果修改的是地点，自动获取新地区的天气和温度（使用debounce机制避免频繁调用）
         if key == "location":
-            # 启动新线程处理天气API调用，避免阻塞GUI主线程
-            threading.Thread(
-                target=self._update_weather_and_temperature,
-                args=(var.get(),),
-                daemon=True  # 设置为守护线程，程序退出时自动结束
-            ).start()
+            # 取消之前的延迟调用
+            if self._weather_api_call_id:
+                self.root.after_cancel(self._weather_api_call_id)
+            
+            # 设置新的延迟调用（500毫秒后执行）
+            def delayed_weather_call():
+                # 启动新线程处理天气API调用，避免阻塞GUI主线程
+                threading.Thread(
+                    target=self._update_weather_and_temperature,
+                    args=(var.get(),),
+                    daemon=True  # 设置为守护线程，程序退出时自动结束
+                ).start()
+            
+            # 保存延迟调用的ID，以便后续可以取消
+            self._weather_api_call_id = self.root.after(500, delayed_weather_call)
         else:
             # 其他配置修改直接保存
             self.config_manager.save()

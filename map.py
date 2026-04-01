@@ -12,6 +12,7 @@ Author: LynxFrost
 import cv2
 import numpy as np
 import random
+import logging
 from PIL import Image
 import os
 
@@ -21,7 +22,7 @@ try:
     USE_KDTREE = True
 except ImportError:
     USE_KDTREE = False
-    print("警告: scipy未安装，将使用普通算法。安装scipy可提高性能: pip install scipy")
+    logging.warning("scipy未安装，将使用普通算法。安装scipy可提高性能: pip install scipy")
 
 # 预加载图标缓存
 START_ICON = None
@@ -39,10 +40,47 @@ def load_icons():
         script_dir = os.path.dirname(os.path.abspath(__file__))
         start_icon_path = os.path.join(script_dir, "src", "start.png")
         end_icon_path = os.path.join(script_dir, "src", "end.png")
-        START_ICON = cv2.imread(start_icon_path, cv2.IMREAD_UNCHANGED)
-        END_ICON = cv2.imread(end_icon_path, cv2.IMREAD_UNCHANGED)
-    except Exception:
+        
+        # 使用绝对路径并确保路径正确
+        START_ICON = cv2.imread(os.path.normpath(start_icon_path), cv2.IMREAD_UNCHANGED)
+        END_ICON = cv2.imread(os.path.normpath(end_icon_path), cv2.IMREAD_UNCHANGED)
+        
+        # 如果cv2.imread返回None，尝试使用PIL读取后转换为cv2格式
+        from PIL import Image
+        import numpy as np
+        
+        # 处理起点图标
+        if START_ICON is None:
+            # 使用PIL读取图片
+            pil_image = Image.open(start_icon_path)
+            # 转换为numpy数组
+            if pil_image.mode == 'RGBA':
+                # 如果图片有alpha通道
+                bgr = np.array(pil_image)[:, :, :3][:, :, ::-1]  # RGB转BGR
+                alpha = np.array(pil_image)[:, :, 3]
+                # 合并为BGRA
+                START_ICON = np.dstack((bgr, alpha))
+            else:
+                # 没有alpha通道
+                START_ICON = np.array(pil_image)[:, :, ::-1]  # RGB转BGR
+        
+        # 处理终点图标
+        if END_ICON is None:
+            # 使用PIL读取图片
+            pil_image = Image.open(end_icon_path)
+            # 转换为numpy数组
+            if pil_image.mode == 'RGBA':
+                # 如果图片有alpha通道
+                bgr = np.array(pil_image)[:, :, :3][:, :, ::-1]  # RGB转BGR
+                alpha = np.array(pil_image)[:, :, 3]
+                # 合并为BGRA
+                END_ICON = np.dstack((bgr, alpha))
+            else:
+                # 没有alpha通道
+                END_ICON = np.array(pil_image)[:, :, ::-1]  # RGB转BGR
+    except Exception as e:
         # 静默失败，后续会使用圆点标记作为备选
+        logging.warning(f"Failed to load icons: {e}")
         pass
 
 # 初始化图标缓存
@@ -307,6 +345,14 @@ def generate_keep_style_path(
                 else:
                     # 没有alpha通道，直接绘制
                     out[start_y:start_y+icon_h, start_x:start_x+icon_w] = resized_start[:, :, :3]
+            else:
+                # 图标超出边界时，使用圆形标记作为备用
+                sx, sy = path[0]
+                cv2.circle(out, (sx, sy), thickness + 2, track_color, -1)
+        else:
+            # 图标加载失败（start_icon为None），使用圆形标记作为备用
+            sx, sy = path[0]
+            cv2.circle(out, (sx, sy), thickness + 2, track_color, -1)
         
         # 绘制终点图标
         if end_icon is not None:
@@ -332,6 +378,14 @@ def generate_keep_style_path(
                 else:
                     # 没有alpha通道，直接绘制
                     out[end_y:end_y+icon_h, end_x:end_x+icon_w] = resized_end[:, :, :3]
+            else:
+                # 图标超出边界时，使用圆形标记作为备用
+                ex, ey = path[-1]
+                cv2.circle(out, (ex, ey), thickness + 2, track_color, -1)
+        else:
+            # 图标加载失败（end_icon为None），使用圆形标记作为备用
+            ex, ey = path[-1]
+            cv2.circle(out, (ex, ey), thickness + 2, track_color, -1)
     except Exception:
         # 如果图标绘制失败，回退到原来的圆点标记
         # 起点圆点
