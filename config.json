@@ -1,10 +1,25 @@
 {
-  "template": "scr/template.png",
-  "map": "scr/map3.png",
-  "avatar": "C:/Users/18505/Downloads/126076978.jpg",
+  "template": "src/template.png",
+  "map": "src/map.png",
+  "avatar": "src/avatar.png",
   "username": "UserName",
+  "map_bg_path": "src/map1.png",
+  "map_mask_path": "src/map2.png",
+  "track_color": [
+    154,
+    201,
+    38
+  ],
+  "track_thickness": 12,
+  "track_sample_rate": 5,
+  "track_max_steps": 3000,
+  "track_completion_threshold": 0.2,
+  "track_target_length": 400,
   "date": "today",
   "end_time": "now",
+  "location": "青岛",
+  "weather": "霾",
+  "temperature": "13.1℃",
   "total_km": {
     "low": 3.04,
     "high": 3.3,
@@ -68,6 +83,5 @@
       0,
       0
     ]
-  },
-  "prefs_file": "keepsultan_prefs.json"
+  }
 }
