@@ -69,7 +69,7 @@
 #### 掩码图制作方法
 
 1. 基于背景图创建一个新图层
-2. 使用深色（通常是黑色）绘制所有可通行的道路和路径
+2. 使用红色绘制所有可通行的道路和路径
 3. 保持非道路区域为浅色或透明
 4. 保存为PNG格式，确保路径区域清晰可见
 
@@ -98,7 +98,7 @@ python KeepSultan.py --config config.json --save result.png \
 ### 2.6 可执行文件
 
 无需 Python 环境，直接运行exe：  
-👉 [下载最新 release](https://github.com/Carzit/KeepSultan/releases/download/v0.0.3/KeepSultan.zip)
+👉 [下载最新 release](https://github.com/Carzit/KeepSultan/releases/)
 
 ---
 
