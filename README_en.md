@@ -76,7 +76,7 @@ To generate dynamic running paths, you need to prepare two images:
 #### Example
 
 * **Background**: `src/map1.png` - Satellite image of a city area
-* **Mask**: `src/map2.png` - Same dimensions as background, with roads drawn in black
+* **Mask**: `src/map2.png` - Same dimensions as background, with roads drawn in red
 
 ### 2.4 GUI Mode
 

@@ -148,7 +148,7 @@ def generate_keep_style_path(
     
     # 尝试直接读取路径
     bg = cv2.imread(bg_path)
-    mask = cv2.imread(path_mask_path)
+    mask = cv2.imread(path_mask_path, cv2.IMREAD_UNCHANGED)
     
     # 如果读取失败，尝试将路径解析为相对于脚本所在目录的路径
     if bg is None:
@@ -157,7 +157,7 @@ def generate_keep_style_path(
     
     if mask is None:
         path_mask_path = os.path.join(script_dir, path_mask_path)
-        mask = cv2.imread(path_mask_path)
+        mask = cv2.imread(path_mask_path, cv2.IMREAD_UNCHANGED)
     
     if bg is None or mask is None:
         raise Exception("图片读取失败")
@@ -169,7 +169,16 @@ def generate_keep_style_path(
     # 在BGR格式中，红色是 (0, 0, 255)
     lower_red = np.array([0, 0, 100])  # 红色的下限
     upper_red = np.array([50, 50, 255])  # 红色的上限
-    binary = cv2.inRange(mask, lower_red, upper_red)
+    
+    # 检查mask是否有alpha通道
+    if mask.shape[2] == 4:
+        # 有alpha通道，需要同时满足红色和alpha > 0
+        binary_red = cv2.inRange(mask[:, :, :3], lower_red, upper_red)
+        binary_alpha = (mask[:, :, 3] > 0).astype(np.uint8) * 255
+        binary = cv2.bitwise_and(binary_red, binary_alpha)
+    else:
+        # 没有alpha通道，只检查红色
+        binary = cv2.inRange(mask, lower_red, upper_red)
     
     # 使用形态学操作减少噪点
     kernel = np.ones((3, 3), np.uint8)
