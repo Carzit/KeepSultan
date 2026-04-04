@@ -69,14 +69,14 @@ To generate dynamic running paths, you need to prepare two images:
 #### Creating a Mask Image
 
 1. Create a new layer based on the background image
-2. Use dark color (usually black) to draw all passable roads and paths
+2. Use red color to draw all passable roads and paths
 3. Keep non-road areas light-colored or transparent
 4. Save as PNG format, ensuring path areas are clearly visible
 
 #### Example
 
 * **Background**: `src/map1.png` - Satellite image of a city area
-* **Mask**: `src/map2.png` - Same dimensions as background, with roads drawn in black
+* **Mask**: `src/map2.png` - Same dimensions as background, with roads drawn in red
 
 ### 2.4 GUI Mode
 
@@ -98,7 +98,7 @@ python KeepSultan.py --config config.json --save result.png \
 ### 2.6 Executable Version
 
 No Python required, just run the `.exe`:
-👉 [Download latest release](https://github.com/Carzit/KeepSultan/releases/download/v0.0.3/KeepSultan.zip)
+👉 [Download latest release](https://github.com/Carzit/KeepSultan/releases/)
 
 ---
 

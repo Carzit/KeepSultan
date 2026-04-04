@@ -148,7 +148,7 @@ def generate_keep_style_path(
     
     # 尝试直接读取路径
     bg = cv2.imread(bg_path)
-    mask = cv2.imread(path_mask_path)
+    mask = cv2.imread(path_mask_path, cv2.IMREAD_UNCHANGED)
     
     # 如果读取失败，尝试将路径解析为相对于脚本所在目录的路径
     if bg is None:
@@ -157,16 +157,28 @@ def generate_keep_style_path(
     
     if mask is None:
         path_mask_path = os.path.join(script_dir, path_mask_path)
-        mask = cv2.imread(path_mask_path)
+        mask = cv2.imread(path_mask_path, cv2.IMREAD_UNCHANGED)
     
     if bg is None or mask is None:
         raise Exception("图片读取失败")
 
     h, w = bg.shape[:2]
 
-    # 2. 提取路径上所有点
-    gray = cv2.cvtColor(mask, cv2.COLOR_BGR2GRAY)
-    _, binary = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
+    # 2. 提取路径上所有点（指定掩码颜色为红色）
+    # 创建红色掩码
+    # 在BGR格式中，红色是 (0, 0, 255)
+    lower_red = np.array([0, 0, 100])  # 红色的下限
+    upper_red = np.array([50, 50, 255])  # 红色的上限
+    
+    # 检查mask是否有alpha通道
+    if mask.shape[2] == 4:
+        # 有alpha通道，需要同时满足红色和alpha > 0
+        binary_red = cv2.inRange(mask[:, :, :3], lower_red, upper_red)
+        binary_alpha = (mask[:, :, 3] > 0).astype(np.uint8) * 255
+        binary = cv2.bitwise_and(binary_red, binary_alpha)
+    else:
+        # 没有alpha通道，只检查红色
+        binary = cv2.inRange(mask, lower_red, upper_red)
     
     # 使用形态学操作减少噪点
     kernel = np.ones((3, 3), np.uint8)
@@ -174,9 +186,7 @@ def generate_keep_style_path(
     binary = cv2.morphologyEx(binary, cv2.MORPH_CLOSE, kernel)  # 闭运算填充
     
     # 提取路径点
-    ys, xs = np.where(binary < 128)  # 假设路径是深色
-    if len(xs) == 0:
-        ys, xs = np.where(binary > 128)
+    ys, xs = np.where(binary > 128)  # 红色区域的值为255
     
     # 路径点下采样，减少计算量
     points = list(zip(xs[::sample_rate], ys[::sample_rate]))
