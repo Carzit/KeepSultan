@@ -17,9 +17,9 @@
   "track_target_length": 400,
   "date": "today",
   "end_time": "now",
-  "location": "青岛",
-  "weather": "霾",
-  "temperature": "13.1℃",
+  "location": "高密",
+  "weather": "",
+  "temperature": "",
   "total_km": {
     "low": 3.04,
     "high": 3.3,
