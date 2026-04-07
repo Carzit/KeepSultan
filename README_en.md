@@ -109,7 +109,7 @@ No Python required, just run the `.exe`:
 For source usage:
 
 ```bash
-pip install pillow opencv-python numpy scipy
+pip install pillow opencv-python numpy scipy requests
 ```
 
 Or synchronize environment via [uv](https://uv.doczh.com/):

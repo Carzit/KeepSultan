@@ -109,7 +109,7 @@ python KeepSultan.py --config config.json --save result.png \
 源码运行需安装：
 
 ```bash
-pip install pillow opencv-python numpy scipy
+pip install pillow opencv-python numpy scipy requests
 ```
 
 或者使用 [uv](https://uv.doczh.com/) 一键同步环境：
