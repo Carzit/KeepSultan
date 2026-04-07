@@ -109,7 +109,7 @@ python KeepSultan.py --config config.json --save result.png \
 源码运行需安装：
 
 ```bash
-pip install pillow opencv-python numpy scipy
+pip install pillow opencv-python numpy scipy requests
 ```
 
 或者使用 [uv](https://uv.doczh.com/) 一键同步环境：
@@ -121,7 +121,6 @@ uv sync
 #### 可选依赖
 
 * **scipy**: 用于加速路径生成算法（如未安装，将使用普通算法替代）
-* **requests**: 用于天气API调用（已包含在标准库中）
 * **tkinter**: 用于运行GUI版本（通常与Python一起安装）
 
 ### 3.2 配置文件

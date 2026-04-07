@@ -29,6 +29,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union, Literal
 
 from urllib.parse import urlparse, quote
 from urllib.request import urlopen, Request
+import requests
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -123,12 +124,12 @@ def fetch_weather_data(city: str = "高密市") -> Tuple[str, str]:
         url = f"https://wttr.in/{encoded_city}?format=j1&lang=zh&m"
         
         # 发送请求
-        req = Request(url, headers={"User-Agent": "KeepSultan/1.0"})
-        with urlopen(req, timeout=10) as r:
-            response = r.read().decode("utf-8")
+        headers = {"User-Agent": "Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Mobile Safari/537.36"}
+        response = requests.get(url, headers=headers, timeout=10)
+        response.raise_for_status()  # 检查响应状态
         
         # 解析JSON响应
-        data = json.loads(response)
+        data = response.json()
         
         # 提取天气和温度数据
         current_condition = data["current_condition"][0]
