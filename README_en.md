@@ -121,7 +121,6 @@ uv sync
 #### Optional Dependencies
 
 * **scipy**: Used to accelerate path generation algorithms (if not installed, a regular algorithm will be used instead)
-* **requests**: Used for weather API calls (included in the standard library)
 * **tkinter**: Used to run the GUI version (usually installed with Python)
 
 ### 3.2 Configuration File
