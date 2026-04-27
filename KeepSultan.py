@@ -128,8 +128,9 @@ def fetch_weather_data(city: str = "高密市") -> Tuple[str, str]:
         response = requests.get(url, headers=headers, timeout=10)
         response.raise_for_status()  # 检查响应状态
         
-        # 解析JSON响应
-        data = response.json()
+        # 解析JSON响应 - 使用原始内容避免编码问题
+        data = json.loads(response.content)
+        
         
         # 提取天气和温度数据
         current_condition = data["current_condition"][0]
